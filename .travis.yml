@@ -1,0 +1,13 @@
+language: go
+
+go:
+  - 1.8
+  - 1.9
+  - tip 
+
+before_install:
+  - go get -v github.com/tealeg/xlsx
+  - go get -v github.com/urfave/cli
+
+script:
+#  - go test -cpu=1,2 -v -tags integration ./...
