@@ -1,20 +1,26 @@
 package main
 
 import (
-	"fmt"
+	"os"
+	"path/filepath"
+
 	"github.com/urfave/cli"
 )
 
 func initCommandLine(args []string) error {
 	cli.NewApp()
 
-	cli.OsExiter = func(c int) {
-		fmt.Fprintf(cli.ErrWriter, "refusing to exit %d\n", c)
-	}
+	//cli.OsExiter = func(c int) {
+	//	fmt.Fprintf(cli.ErrWriter, "refusing to exit %d\n", c)
+	//}
 
 	app := cli.NewApp()
 	app.Name = "cvs2xlsx"
-	app.Usage = "Convert CSV data to xlsx - especially the big one"
+	app.Usage = "Convert CSV data to xlsx - especially the big one. \n\n" +
+		"Example: \n" +
+		"   cvs2xlsx --template example/template.xlsx --sheet Sheet_1 --sheet Sheet_2 --row 2 --output result.xlsx data.csv data2.csv \n" +
+		"   cvs2xlsx.exe -t example\template.xlsx -s Sheet_1 -s Sheet_2 -r 2 -o result.xlsx data.csv data2.csv "
+
 	app.Version = "0.1.0"
 	app.ArgsUsage = "[file of file's list with csv data]"
 
@@ -44,11 +50,78 @@ func initCommandLine(args []string) error {
 
 	app.Action = func(c *cli.Context) error {
 
-		fmt.Printf("Args   %#v  \n", c.Args()) //  Get(0)
-		fmt.Printf("sheets  %#v   \n", c.StringSlice("sheets"))
+		p, err := checkAndReturnParams(c)
+		if err != nil {
+			return err
+		}
 
-		return cli.NewExitError("oh err well", 0)
+		return buildXls(c, p)
 	}
 
 	return app.Run(args)
+}
+
+func checkAndReturnParams(c *cli.Context) (*params, error) {
+	p := &params{}
+
+	output := c.String("output")
+	if output == "" {
+		return nil, cli.NewExitError("Path to output file not defined", 1)
+	}
+
+	output, err := filepath.Abs(output)
+	if err != nil {
+		return nil, cli.NewExitError("Wrong path to output file", 2)
+	}
+	p.output = output
+
+	//
+
+	p.input = make([]string, len(c.Args()))
+	for i, f := range c.Args() {
+		filename, err := filepath.Abs(f)
+		if err != nil {
+			return nil, cli.NewExitError("Wrong path to input file "+filename, 3)
+		}
+		if _, err := os.Stat(filename); os.IsNotExist(err) {
+			return nil, cli.NewExitError("Input file does not exist ( "+filename+" )", 4)
+		}
+
+		p.input[i] = filename
+	}
+
+	//
+
+	p.row = c.Int("row")
+	p.sheets = c.StringSlice("sheets")
+
+	//
+
+	xlsxTemplate := c.String("template")
+	if xlsxTemplate != "" {
+		xlsxTemplate, err = filepath.Abs(xlsxTemplate)
+		if err != nil {
+			return nil, cli.NewExitError("Wrong path to template file", 5)
+		}
+		if _, err := os.Stat(xlsxTemplate); os.IsNotExist(err) {
+			return nil, cli.NewExitError("Template file does not exist ( "+xlsxTemplate+" )", 6)
+		}
+		p.xlsxTemplate = xlsxTemplate
+	}
+
+	if p.row != 0 && xlsxTemplate == "" {
+		return nil, cli.NewExitError("Defined `row template` without xlsx template file", 7)
+	}
+
+	return p, nil
+}
+
+type params struct {
+	output string
+	input  []string
+
+	xlsxTemplate string
+
+	sheets []string
+	row    int
 }
