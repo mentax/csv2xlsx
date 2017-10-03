@@ -5,23 +5,24 @@ import (
 	"os"
 
 	"encoding/csv"
-	"github.com/tealeg/xlsx"
 	"io"
 	"strconv"
+
+	"github.com/tealeg/xlsx"
 )
 
 var exampleRowNumber = 3
 
-func main() {
+func init() {
 	initCommandLine(os.Args)
+}
 
-	return
+func main() {
+	dataFileName := "example/backoffice.csv"
 
-	dataFileName := "example/test.csv"
+	r := getCsvData(dataFileName)
 
-	r := getSheetData(dataFileName)
-
-	fmt.Println(dataFileName)
+	//fmt.Println(dataFileName)
 
 	xlFile, err := xlsx.OpenFile("./example/default.xlsx")
 	if err != nil {
@@ -77,18 +78,7 @@ func writeRowToXls(sheet *xlsx.Sheet, record []string, exampleRow *xlsx.Row) {
 	for k, v := range record {
 		cell = row.AddCell()
 
-		intVal, err := strconv.ParseInt(v, 10, 64)
-		if err == nil {
-			cell.SetInt64(intVal)
-		} else {
-			floatVal, err := strconv.ParseFloat(v, 64)
-
-			if err == nil {
-				cell.SetFloat(floatVal)
-			} else {
-				cell.Value = v
-			}
-		}
+		setCellValue(cell, v)
 
 		style := exampleRow.Cells[k].GetStyle()
 
@@ -96,7 +86,28 @@ func writeRowToXls(sheet *xlsx.Sheet, record []string, exampleRow *xlsx.Row) {
 	}
 }
 
-func getSheetData(dataFileName string) *csv.Reader {
+// setCellValue set data in correct format.
+func setCellValue(cell *xlsx.Cell, v string) {
+	intVal, err := strconv.Atoi(v)
+	if err == nil {
+		if intVal < 100000000000 { // Long numbers are displayed incorrectly in Excel
+			cell.SetInt(intVal)
+			return
+		}
+		cell.Value = v
+		return
+	}
+
+	floatVal, err := strconv.ParseFloat(v, 64)
+	if err == nil {
+		cell.SetFloat(floatVal)
+		return
+	}
+	cell.Value = v
+}
+
+// getCsvData read's data from CSV file.
+func getCsvData(dataFileName string) *csv.Reader {
 	dataFile, err := os.Open(dataFileName)
 	if err != nil {
 		fmt.Println(err)

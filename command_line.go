@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+
 	"github.com/urfave/cli"
 )
 
@@ -44,11 +47,28 @@ func initCommandLine(args []string) error {
 
 	app.Action = func(c *cli.Context) error {
 
+		checkArgs(c)
+
 		fmt.Printf("Args   %#v  \n", c.Args()) //  Get(0)
 		fmt.Printf("sheets  %#v   \n", c.StringSlice("sheets"))
 
+		return nil
 		return cli.NewExitError("oh err well", 0)
 	}
 
 	return app.Run(args)
+}
+
+func checkArgs(c *cli.Context) {
+
+	for _, filename := range c.Args() {
+
+		filename, err := filepath.Abs(filename)
+		fmt.Println(filename, err)
+
+		if _, err := os.Stat(filename); os.IsNotExist(err) {
+			fmt.Printf("file does not exist %s \n", filename)
+		}
+
+	}
 }
