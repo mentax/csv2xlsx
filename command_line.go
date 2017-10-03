@@ -47,10 +47,15 @@ func initCommandLine(args []string) error {
 
 	app.Action = func(c *cli.Context) error {
 
-		checkArgs(c)
+		p, err := checkAndReturnParams(c)
+		if err != nil {
+			return err
+		}
 
-		fmt.Printf("Args   %#v  \n", c.Args()) //  Get(0)
-		fmt.Printf("sheets  %#v   \n", c.StringSlice("sheets"))
+		fmt.Println(p)
+
+		//fmt.Printf("Args   %#v  \n", c.Args()) //  Get(0)
+		//fmt.Printf("sheets  %#v   \n", c.StringSlice("sheets"))
 
 		return nil
 		return cli.NewExitError("oh err well", 0)
@@ -59,16 +64,63 @@ func initCommandLine(args []string) error {
 	return app.Run(args)
 }
 
-func checkArgs(c *cli.Context) {
+func checkAndReturnParams(c *cli.Context) (*params, error) {
+	p := &params{}
 
-	for _, filename := range c.Args() {
+	output := c.String("output")
+	if output == "" {
+		return nil, cli.NewExitError("Path to output file not defined", 1)
+	}
 
-		filename, err := filepath.Abs(filename)
-		fmt.Println(filename, err)
+	output, err := filepath.Abs(output)
+	if err != nil {
+		return nil, cli.NewExitError("Wrong path to output file", 2)
+	}
+	p.output = output
 
+	//
+
+	p.input = make([]string, len(c.Args()))
+	for i, f := range c.Args() {
+		filename, err := filepath.Abs(f)
+		if err != nil {
+			return nil, cli.NewExitError("Wrong path to input file "+filename, 3)
+		}
 		if _, err := os.Stat(filename); os.IsNotExist(err) {
-			fmt.Printf("file does not exist %s \n", filename)
+			return nil, cli.NewExitError("Input file does not exist ( "+filename+" )", 4)
 		}
 
+		p.input[i] = filename
 	}
+
+	//
+
+	p.row = c.Int("row")
+	p.sheets = c.StringSlice("sheets")
+
+	//
+
+	xlsxTemplate := c.String("template")
+	if xlsxTemplate != "" {
+		xlsxTemplate, err = filepath.Abs(xlsxTemplate)
+		if err != nil {
+			return nil, cli.NewExitError("Wrong path to template file", 5)
+		}
+		if _, err := os.Stat(xlsxTemplate); os.IsNotExist(err) {
+			return nil, cli.NewExitError("Template file does not exist ( "+xlsxTemplate+" )", 6)
+		}
+		p.xlsxTemplate = xlsxTemplate
+	}
+
+	return p, nil
+}
+
+type params struct {
+	output string
+	input  []string
+
+	xlsxTemplate string
+
+	sheets []string
+	row    int
 }

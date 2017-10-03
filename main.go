@@ -14,11 +14,15 @@ import (
 var exampleRowNumber = 3
 
 func init() {
-	initCommandLine(os.Args)
+
 }
 
 func main() {
-	dataFileName := "example/backoffice.csv"
+
+	initCommandLine(os.Args)
+	return
+
+	dataFileName := "example/test.csv"
 
 	r := getCsvData(dataFileName)
 
