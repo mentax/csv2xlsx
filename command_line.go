@@ -11,7 +11,7 @@ func initCommandLine(args []string) error {
 	cli.NewApp()
 
 	//cli.OsExiter = func(c int) {
-	//	fmt.Fprintf(cli.ErrWriter, "refusing to exit %d\n", c)
+	//	fmt.Fprintf(cli.ErrWriter, "error number %d\n", c)
 	//}
 
 	app := cli.NewApp()
