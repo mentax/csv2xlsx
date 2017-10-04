@@ -12,10 +12,9 @@ import (
 	"github.com/urfave/cli"
 )
 
-const SHEET_NAME_TEMPLATE = "Sheet %i"
+const SheetNamesTemplate = "Sheet %i"
 
 func main() {
-
 	initCommandLine(os.Args)
 }
 
@@ -23,39 +22,53 @@ func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, 
 
 	for i, dataFileName := range dataFiles {
 
-		sheetName := sheetNames[i]
-		if sheetName == "" {
-			sheetName = fmt.Sprintf(SHEET_NAME_TEMPLATE, i)
-		}
-
-		sheet, ok := xlFile.Sheet[sheetName]
-		if ok != true {
-			sheet, err = xlFile.AddSheet(sheetName)
-
-			if err != nil {
-				return err
-			}
+		sheet, err := getSheet(xlFile, sheetNames, i)
+		if err != nil {
+			return err
 		}
 
 		var exampleRow *xlsx.Row
-		if exampleRowNumber != 0 {
-			exampleRow = sheet.Rows[exampleRowNumber]
+		if exampleRowNumber != 0 && exampleRowNumber <= len(sheet.Rows) {
+			// example row counting from 1
+			exampleRow = sheet.Rows[exampleRowNumber-1]
+
+			// remove example row
+			sheet.Rows = append(sheet.Rows[:exampleRowNumber-1], sheet.Rows[exampleRowNumber:]...)
 		}
 
 		err = writeSheet(dataFileName, sheet, exampleRow)
-
-		if exampleRow != nil {
-			// remove example row
-			sheet.Rows = append(sheet.Rows[:exampleRowNumber], sheet.Rows[exampleRowNumber+1:]...)
-		}
 	}
 
 	return err
 }
 
+func getSheet(xlFile *xlsx.File, sheetNames []string, i int) (sheet *xlsx.Sheet, err error) {
+
+	var sheetName string
+	if len(sheetNames) > i {
+		sheetName = sheetNames[i]
+	} else {
+		sheetName = fmt.Sprintf(SheetNamesTemplate, i+1)
+	}
+
+	sheet, ok := xlFile.Sheet[sheetName]
+	if ok != true {
+		sheet, err = xlFile.AddSheet(sheetName)
+
+		if err != nil {
+			return nil, err
+		}
+	}
+	return sheet, nil
+}
+
 func writeSheet(dataFileName string, sheet *xlsx.Sheet, exampleRow *xlsx.Row) error {
 
-	data := getCsvData(dataFileName)
+	data, err := getCsvData(dataFileName)
+
+	if err != nil {
+		return err
+	}
 
 	var i int
 	for {
@@ -108,12 +121,17 @@ func writeRowToXls(sheet *xlsx.Sheet, record []string, exampleRow *xlsx.Row) {
 	row = sheet.AddRow()
 	//row.WriteSlice( &record , -1)
 
+	var cellsLen int
+	if exampleRow != nil {
+		cellsLen = len(exampleRow.Cells)
+	}
+
 	for k, v := range record {
 		cell = row.AddCell()
 
 		setCellValue(cell, v)
 
-		if exampleRow != nil {
+		if exampleRow != nil && cellsLen > k {
 			style := exampleRow.Cells[k].GetStyle()
 
 			cell.SetStyle(style)
@@ -142,12 +160,11 @@ func setCellValue(cell *xlsx.Cell, v string) {
 }
 
 // getCsvData read's data from CSV file.
-func getCsvData(dataFileName string) *csv.Reader {
+func getCsvData(dataFileName string) (*csv.Reader, error) {
 	dataFile, err := os.Open(dataFileName)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return nil, cli.NewExitError("Problem with reading data from "+dataFileName, 11)
 	}
 
-	return csv.NewReader(dataFile)
+	return csv.NewReader(dataFile), nil
 }

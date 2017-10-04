@@ -13,6 +13,13 @@
 
 ### NAME:
    cvs2xlsx - Convert CSV data to xlsx - especially the big one. 
+   
+### Speed: 
+   
+   cvs with 50k rows, 5 MB, with xlsx template - 5s
+   
+   
+   (On MacBook Pro 2016) 
 
 ### Example: 
 
@@ -26,11 +33,8 @@ cvs2xlsx.exe -t example  emplate.xlsx -s Sheet_1 -s Sheet_2 -r 2 -o result.xlsx 
     cvs2xlsx [global options] command [command options] [file of file's list with csv data]
 
 #### VERSION:
-   0.1.0
-
-#### COMMANDS:
-     help, h  Shows a list of commands or help for one command
-
+   0.2.0
+  
 #### GLOBAL OPTIONS:
 
 ```

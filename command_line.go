@@ -11,7 +11,7 @@ func initCommandLine(args []string) error {
 	cli.NewApp()
 
 	//cli.OsExiter = func(c int) {
-	//	fmt.Fprintf(cli.ErrWriter, "refusing to exit %d\n", c)
+	//	fmt.Fprintf(cli.ErrWriter, "error number %d\n", c)
 	//}
 
 	app := cli.NewApp()
@@ -21,7 +21,7 @@ func initCommandLine(args []string) error {
 		"   cvs2xlsx --template example/template.xlsx --sheet Sheet_1 --sheet Sheet_2 --row 2 --output result.xlsx data.csv data2.csv \n" +
 		"   cvs2xlsx.exe -t example\template.xlsx -s Sheet_1 -s Sheet_2 -r 2 -o result.xlsx data.csv data2.csv "
 
-	app.Version = "0.1.0"
+	app.Version = "0.2.0"
 	app.ArgsUsage = "[file of file's list with csv data]"
 
 	app.Flags = []cli.Flag{
