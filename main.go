@@ -12,7 +12,8 @@ import (
 	"github.com/urfave/cli"
 )
 
-const SheetNamesTemplate = "Sheet %d"
+// SheetNamesTemplate define name's for new created sheets.
+var SheetNamesTemplate = "Sheet %d"
 
 func main() {
 	initCommandLine(os.Args)
@@ -37,9 +38,13 @@ func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, 
 		}
 
 		err = writeSheet(dataFileName, sheet, exampleRow)
+
+		if err != nil {
+			return err
+		}
 	}
 
-	return err
+	return nil
 }
 
 func getSheet(xlFile *xlsx.File, sheetNames []string, i int) (sheet *xlsx.Sheet, err error) {
