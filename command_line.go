@@ -15,19 +15,19 @@ func initCommandLine(args []string) error {
 	//}
 
 	app := cli.NewApp()
-	app.Name = "cvs2xlsx"
-	app.Usage = "Convert CSV data to xlsx - especially the big one. \n\n" +
+	app.Name = "csv2xlsx"
+	app.Usage = "Convert CSV data to XLSX - especially the big one. \n\n" +
 		"Example: \n" +
-		"   cvs2xlsx --template example/template.xlsx --sheet Sheet_1 --sheet Sheet_2 --row 2 --output result.xlsx data.csv data2.csv \n" +
-		"   cvs2xlsx.exe -t example\template.xlsx -s Sheet_1 -s Sheet_2 -r 2 -o result.xlsx data.csv data2.csv "
+		"   csv2xlsx --template example/template.xlsx --sheet Sheet_1 --sheet Sheet_2 --row 2 --output result.xlsx data.csv data2.csv \n" +
+		"   csv2xlsx.exe -t example\\template.xlsx -s Sheet_1 -s Sheet_2 -r 2 -o result.xlsx data.csv data2.csv "
 
-	app.Version = "0.2.0"
+	app.Version = "0.2.1"
 	app.ArgsUsage = "[file of file's list with csv data]"
 
 	app.Flags = []cli.Flag{
 		cli.StringSliceFlag{
 			Name:  "sheets, s",
-			Usage: "sheet `names` in the same order like cvs files. If sheet with that name exists, data is inserted to this sheet. Usage: -s AA -s BB ",
+			Usage: "sheet `names` in the same order like csv files. If sheet with that name exists, data is inserted to this sheet. Usage: -s AA -s BB ",
 		},
 		cli.StringFlag{
 			Name:  "template, t",

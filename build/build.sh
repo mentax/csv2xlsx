@@ -1,7 +1,7 @@
 #!/bin/sh
 
-ver=v0.2.0
+ver=v0.2.1
 
-env GOOS=linux go build -o "cvs2xlsx.linux.${ver}" ../
-env GOOS=darwin go build -o "cvs2xlsx.mac.${ver}" ../
-env GOOS=windows go build -o "cvs2xlsx.win.${ver}.exe" ../
+env GOOS=linux go build -o "csv2xlsx.linux.${ver}" ../
+env GOOS=darwin go build -o "csv2xlsx.mac.${ver}" ../
+env GOOS=windows go build -o "csv2xlsx.win.${ver}.exe" ../
