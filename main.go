@@ -12,7 +12,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-const SheetNamesTemplate = "Sheet %i"
+const SheetNamesTemplate = "Sheet %d"
 
 func main() {
 	initCommandLine(os.Args)
