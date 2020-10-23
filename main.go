@@ -29,12 +29,11 @@ func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, 
 		}
 
 		var exampleRow *xlsx.Row
-		if exampleRowNumber != 0 && exampleRowNumber <= len(sheet.Rows) {
+		if exampleRowNumber != 0 && exampleRowNumber <= sheet.MaxRow {
 			// example row counting from 1
-			exampleRow = sheet.Rows[exampleRowNumber-1]
+			exampleRow, _ = sheet.Row(exampleRowNumber - 1)
 
-			// remove example row
-			sheet.Rows = append(sheet.Rows[:exampleRowNumber-1], sheet.Rows[exampleRowNumber:]...)
+			sheet.RemoveRowAtIndex(exampleRowNumber - 1)
 		}
 
 		err = writeSheet(dataFileName, sheet, exampleRow)
@@ -85,13 +84,13 @@ func writeSheet(dataFileName string, sheet *xlsx.Sheet, exampleRow *xlsx.Row) er
 			return err
 		}
 
-		//if i > 5000 {
+		// if i > 5000 {
 		//	break
-		//}
+		// }
 
-		//if i%500 == 0 {
-		//	fmt.Println(i)
-		//}
+		// if i%500 == 0 {
+		// 	fmt.Println(i)
+		// }
 
 		i++
 
@@ -101,7 +100,7 @@ func writeSheet(dataFileName string, sheet *xlsx.Sheet, exampleRow *xlsx.Row) er
 	return nil
 }
 
-func buildXls(c *cli.Context, p *params) (err error) {
+func buildXls(p *params) (err error) {
 
 	var xlFile *xlsx.File
 	if p.xlsxTemplate == "" {
@@ -124,11 +123,11 @@ func writeRowToXls(sheet *xlsx.Sheet, record []string, exampleRow *xlsx.Row) {
 	var cell *xlsx.Cell
 
 	row = sheet.AddRow()
-	//row.WriteSlice( &record , -1)
+	// row.WriteSlice( &record , -1)
 
 	var cellsLen int
 	if exampleRow != nil {
-		cellsLen = len(exampleRow.Cells)
+		cellsLen = exampleRow.Sheet.MaxCol
 	}
 
 	for k, v := range record {
@@ -137,7 +136,7 @@ func writeRowToXls(sheet *xlsx.Sheet, record []string, exampleRow *xlsx.Row) {
 		setCellValue(cell, v)
 
 		if exampleRow != nil && cellsLen > k {
-			style := exampleRow.Cells[k].GetStyle()
+			style := exampleRow.GetCell(k).GetStyle()
 
 			cell.SetStyle(style)
 		}
@@ -168,7 +167,7 @@ func setCellValue(cell *xlsx.Cell, v string) {
 func getCsvData(dataFileName string) (*csv.Reader, error) {
 	dataFile, err := os.Open(dataFileName)
 	if err != nil {
-		return nil, cli.NewExitError("Problem with reading data from "+dataFileName, 11)
+		return nil, cli.Exit("Problem with reading data from "+dataFileName, 11)
 	}
 
 	return csv.NewReader(dataFile), nil
