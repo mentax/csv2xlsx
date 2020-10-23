@@ -1,15 +1,17 @@
 
 
-[![Build Status](https://travis-ci.org/mentax/csv2xlsx.svg?branch=master)](https://travis-ci.org/mentax/csv2xlsx)
+![goreleaser](https://github.com/mentax/csv2xlsx/workflows/goreleaser/badge.svg)
 [![GoDoc](https://godoc.org/github.com/mentax/csv2xlsx?status.svg)](https://godoc.org/github.com/mentax/csv2xlsx)
 [![codebeat badge](https://codebeat.co/badges/1b57272c-e0fa-4a14-93b5-3586e192fdb3)](https://codebeat.co/projects/github-com-mentax-csv2xlsx-master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mentax/csv2xlsx)](https://goreportcard.com/report/github.com/mentax/csv2xlsx)
-[![Coverage](https://gocover.io/_badge/github.com/mentax/csv2xlsx)](http://gocover.io/github.com/mentax/csv2xlsx)
+<!-- 
+  [![Coverage](https://gocover.io/_badge/github.com/mentax/csv2xlsx)](http://gocover.io/github.com/mentax/csv2xlsx)
+-->
 
 # csv 2 xlsx
 
 ## HELP
-  Actual version always on  csv2xlsx -h or csv2xlsx help
+  An actual version always available by run `csv2xlsx -h` or `csv2xlsx help`
 
 ### NAME:
    csv2xlsx - Convert CSV data to xlsx - especially the big one.
@@ -31,9 +33,6 @@ csv2xlsx.exe -t example/template.xlsx -s Sheet_1 -s Sheet_2 -r 2 -o result.xlsx 
 ### USAGE:
 
     csv2xlsx [global options] command [command options] [file of file's list with csv data]
-
-#### VERSION:
-   0.2.1
 
 #### GLOBAL OPTIONS:
 
