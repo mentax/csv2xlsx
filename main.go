@@ -1,15 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"os"
-
 	"encoding/csv"
+	"errors"
+	"fmt"
 	"io"
+	"os"
 	"strconv"
 
-	"github.com/tealeg/xlsx"
-	"github.com/urfave/cli"
+	"github.com/tealeg/xlsx/v3"
 )
 
 // SheetNamesTemplate define name's for new created sheets.
@@ -167,7 +166,7 @@ func setCellValue(cell *xlsx.Cell, v string) {
 func getCsvData(dataFileName string) (*csv.Reader, error) {
 	dataFile, err := os.Open(dataFileName)
 	if err != nil {
-		return nil, cli.Exit("Problem with reading data from "+dataFileName, 11)
+		return nil, errors.New("Problem with reading data from " + dataFileName)
 	}
 
 	return csv.NewReader(dataFile), nil
