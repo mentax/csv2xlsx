@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"strconv"
 
@@ -122,7 +123,6 @@ func writeRowToXls(sheet *xlsx.Sheet, record []string, exampleRow *xlsx.Row) {
 	var cell *xlsx.Cell
 
 	row = sheet.AddRow()
-	// row.WriteSlice( &record , -1)
 
 	var cellsLen int
 	if exampleRow != nil {
@@ -146,7 +146,7 @@ func writeRowToXls(sheet *xlsx.Sheet, record []string, exampleRow *xlsx.Row) {
 func setCellValue(cell *xlsx.Cell, v string) {
 	intVal, err := strconv.Atoi(v)
 	if err == nil {
-		if intVal < 100000000000 { // Long numbers are displayed incorrectly in Excel
+		if intVal < math.MinInt32 { // Long numbers are displayed incorrectly in Excel
 			cell.SetInt(intVal)
 			return
 		}

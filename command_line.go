@@ -17,6 +17,13 @@ type params struct {
 	row    int
 }
 
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+	builtBy = "unknown"
+)
+
 func initCommandLine(args []string) error {
 	app := cli.NewApp()
 	app.EnableBashCompletion = true
@@ -26,8 +33,8 @@ func initCommandLine(args []string) error {
 		"   csv2xlsx --template example/template.xlsx --sheet Sheet_1 --sheet Sheet_2 --row 2 --output result.xlsx data.csv data2.csv \n" +
 		"   csv2xlsx.exe -t example\\template.xlsx -s Sheet_1 -s Sheet_2 -r 2 -o result.xlsx data.csv data2.csv "
 
-	app.Version = "0.2.3"
-	app.ArgsUsage = "[file of file's list with csv data]"
+	app.Version = version + " built in " + date
+	app.ArgsUsage = "[file or file's list with csv data]"
 
 	app.Flags = []cli.Flag{
 		&cli.StringSliceFlag{
