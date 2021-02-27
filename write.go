@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/tealeg/xlsx/v3"
 	"io"
 	"math"
@@ -80,7 +81,7 @@ func buildXls(p *params) (err error) {
 		}
 	}
 
-	writeAllSheets(xlFile, p.input, p.sheets, p.row)
+	writeAllSheets(xlFile, p.input, p.sheets, p.exampleRow)
 
 	return xlFile.Save(p.output)
 }
@@ -128,4 +129,23 @@ func setCellValue(cell *xlsx.Cell, v string) {
 		return
 	}
 	cell.Value = v
+}
+
+func getSheet(xlFile *xlsx.File, sheetNames []string, i int) (sheet *xlsx.Sheet, err error) {
+	var sheetName string
+	if len(sheetNames) > i {
+		sheetName = sheetNames[i]
+	} else {
+		sheetName = fmt.Sprintf(SheetNamesTemplate, i+1)
+	}
+
+	sheet, ok := xlFile.Sheet[sheetName]
+	if ok != true {
+		sheet, err = xlFile.AddSheet(sheetName)
+
+		if err != nil {
+			return nil, err
+		}
+	}
+	return sheet, nil
 }

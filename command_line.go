@@ -13,8 +13,8 @@ type params struct {
 
 	xlsxTemplate string
 
-	sheets []string
-	row    int
+	sheets     []string
+	exampleRow int
 }
 
 var (
@@ -30,7 +30,7 @@ func initCommandLine(args []string) error {
 	app.Name = "csv2xlsx"
 	app.Usage = "Convert CSV data to XLSX - especially the big one. \n\n" +
 		"Example: \n" +
-		"   csv2xlsx --template example/template.xlsx --sheet Sheet_1 --sheet Sheet_2 --row 2 --output result.xlsx data.csv data2.csv \n" +
+		"   csv2xlsx --template example/template.xlsx --sheet Sheet_1 --sheet Sheet_2 --exampleRow 2 --output result.xlsx data.csv data2.csv \n" +
 		"   csv2xlsx.exe -t example\\template.xlsx -s Sheet_1 -s Sheet_2 -r 2 -o result.xlsx data.csv data2.csv "
 
 	app.Version = version + " built in " + date
@@ -49,10 +49,10 @@ func initCommandLine(args []string) error {
 			Usage:   "`path` to xlsx file with template output",
 		},
 		&cli.IntFlag{
-			Name:    "row",
+			Name:    "exampleRow",
 			Aliases: []string{"r"},
 			Value:   0,
-			Usage:   "row `number` to use for create rows format. When '0' - not used. This row will be removed from xlsx file.",
+			Usage:   "exampleRow `number` to use for create rows format. When '0' - not used. This exampleRow will be overwrite in result xlsx file.",
 		},
 		&cli.StringFlag{
 			Name:    "output",
@@ -106,7 +106,7 @@ func checkAndReturnParams(c *cli.Context) (*params, error) {
 
 	//
 
-	p.row = c.Int("row")
+	p.exampleRow = c.Int("exampleRow")
 	p.sheets = c.StringSlice("sheets")
 
 	//
@@ -123,8 +123,8 @@ func checkAndReturnParams(c *cli.Context) (*params, error) {
 		p.xlsxTemplate = xlsxTemplate
 	}
 
-	if p.row != 0 && xlsxTemplate == "" {
-		return nil, cli.Exit("Defined `row template` without xlsx template file", 7)
+	if p.exampleRow != 0 && xlsxTemplate == "" {
+		return nil, cli.Exit("Defined `exampleRow in template` without xlsx template file", 7)
 	}
 
 	return p, nil
