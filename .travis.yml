@@ -1,9 +1,9 @@
 language: go
 
 go:
+  - 1.16
   - 1.15
-  - 1.14
-  - tip 
+  - tip
 
 before_install:
   - go get -v github.com/tealeg/xlsx
