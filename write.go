@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/tealeg/xlsx/v3"
 	"io"
 	"math"
 	"strconv"
+
+	"github.com/tealeg/xlsx/v3"
 )
 
 func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, exampleRowNumber int) (err error) {
@@ -105,14 +106,30 @@ func writeRowToXls(sheet *xlsx.Sheet, record []string, exampleRow *xlsx.Row) {
 
 		if exampleRow != nil && cellsLen > k {
 			style := exampleRow.GetCell(k).GetStyle()
+			format := exampleRow.GetCell(k).GetNumberFormat()
 
 			cell.SetStyle(style)
+			cell.SetFormat(format)
 		}
 	}
 }
 
 // setCellValue set data in correct format.
 func setCellValue(cell *xlsx.Cell, v string) {
+
+	// fast path
+	if v == "" {
+		cell.Value = ""
+		return
+	}
+
+	// field marked as string
+	if v[0] == '\'' {
+		cell.Value = v[1:]
+		cell.NumFmt = "general"
+		return
+	}
+
 	intVal, err := strconv.Atoi(v)
 	if err == nil {
 		if intVal < math.MinInt32 { // Long numbers are displayed incorrectly in Excel
@@ -128,6 +145,7 @@ func setCellValue(cell *xlsx.Cell, v string) {
 		cell.SetFloat(floatVal)
 		return
 	}
+
 	cell.Value = v
 }
 
