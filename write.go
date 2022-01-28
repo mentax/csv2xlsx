@@ -3,8 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
-	"math"
-	"strconv"
+	"unicode"
 
 	"github.com/tealeg/xlsx/v3"
 )
@@ -119,34 +118,22 @@ func setCellValue(cell *xlsx.Cell, v string) {
 
 	// fast path
 	if v == "" {
-		cell.Value = ""
+		cell.SetString("")
 		return
 	}
 
 	// field marked as string
 	if v[0] == '\'' {
-		cell.Value = v[1:]
-		cell.NumFmt = "general"
+		cell.SetString(v[1:])
 		return
 	}
 
-	intVal, err := strconv.Atoi(v)
-	if err == nil {
-		if intVal < math.MinInt32 { // Long numbers are displayed incorrectly in Excel
-			cell.SetInt(intVal)
-			return
-		}
-		cell.Value = v
+	if isNumeric(v) {
+		cell.SetNumeric(v)
 		return
 	}
 
-	floatVal, err := strconv.ParseFloat(v, 64)
-	if err == nil {
-		cell.SetFloat(floatVal)
-		return
-	}
-
-	cell.Value = v
+	cell.SetString(v)
 }
 
 func getSheet(xlFile *xlsx.File, sheetNames []string, i int) (sheet *xlsx.Sheet, err error) {
@@ -166,4 +153,21 @@ func getSheet(xlFile *xlsx.File, sheetNames []string, i int) (sheet *xlsx.Sheet,
 		}
 	}
 	return sheet, nil
+}
+
+func isNumeric(s string) bool {
+
+	for _, c := range s {
+		if c == '.' {
+			continue
+		}
+		if c == '-' {
+			continue
+		}
+
+		if !unicode.IsDigit(c) {
+			return false
+		}
+	}
+	return true
 }
