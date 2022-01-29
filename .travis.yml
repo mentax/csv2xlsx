@@ -6,8 +6,7 @@ go:
   - tip
 
 before_install:
-  - go get -v github.com/tealeg/xlsx
-  - go get -v github.com/urfave/cli
+  - go mod download
 
 script:
 #  - go test -cpu=1,2 -v -tags integration ./...
