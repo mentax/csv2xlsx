@@ -157,11 +157,15 @@ func getSheet(xlFile *xlsx.File, sheetNames []string, i int) (sheet *xlsx.Sheet,
 
 func isNumeric(s string) bool {
 
+	//if len(s)> 15{
+	//	return false
+	//}
+
 	for _, c := range s {
 		if c == '.' {
 			continue
 		}
-		if c == '-' {
+		if c == '-' { // minus
 			continue
 		}
 
