@@ -28,6 +28,7 @@ var (
 
 func initCommandLine(args []string) error {
 	app := cli.NewApp()
+	app.Suggest = true
 	app.EnableBashCompletion = true
 	app.Name = "csv2xlsx"
 	app.Usage = "Convert CSV data to XLSX - especially the big one. \n\n" +
