@@ -15,6 +15,8 @@ type params struct {
 
 	sheets     []string
 	exampleRow int
+
+	delimiter rune
 }
 
 var (
@@ -47,6 +49,12 @@ func initCommandLine(args []string) error {
 			Aliases: []string{"t"},
 			Value:   "",
 			Usage:   "`path` to xlsx file with template output",
+		},
+		&cli.StringFlag{
+			Name:    "delimiter",
+			Aliases: []string{"d"},
+			Value:   ",",
+			Usage:   "one `letter` delimiter used in csv file",
 		},
 		&cli.IntFlag{
 			Name:    "exampleRow",
@@ -89,6 +97,8 @@ func checkAndReturnParams(c *cli.Context) (*params, error) {
 	}
 	p.output = output
 
+	delimiter := []rune(c.String("delimiter"))
+	p.delimiter = delimiter[0]
 	//
 
 	p.input = make([]string, c.Args().Len())

@@ -8,7 +8,7 @@ import (
 	"github.com/tealeg/xlsx/v3"
 )
 
-func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, exampleRowNumber int) (err error) {
+func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, exampleRowNumber int, delimiter rune) (err error) {
 
 	for i, dataFileName := range dataFiles {
 
@@ -25,7 +25,7 @@ func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, 
 			sheet.RemoveRowAtIndex(exampleRowNumber - 1)
 		}
 
-		err = writeSheet(dataFileName, sheet, exampleRow)
+		err = writeSheet(dataFileName, sheet, exampleRow, delimiter)
 
 		if err != nil {
 			return err
@@ -35,13 +35,15 @@ func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, 
 	return nil
 }
 
-func writeSheet(dataFileName string, sheet *xlsx.Sheet, exampleRow *xlsx.Row) error {
+func writeSheet(dataFileName string, sheet *xlsx.Sheet, exampleRow *xlsx.Row, delimiter rune) error {
 
 	data, err := getCsvData(dataFileName)
 
 	if err != nil {
 		return err
 	}
+
+	data.Comma = delimiter
 
 	var i int
 	for {
@@ -81,7 +83,7 @@ func buildXls(p *params) (err error) {
 		}
 	}
 
-	writeAllSheets(xlFile, p.input, p.sheets, p.exampleRow)
+	writeAllSheets(xlFile, p.input, p.sheets, p.exampleRow, p.delimiter)
 
 	return xlFile.Save(p.output)
 }
