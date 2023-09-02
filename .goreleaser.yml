@@ -19,12 +19,18 @@ builds:
       - arm
       - arm64
 archives:
-  - replacements:
-      darwin: MacOS
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
+  - id: foo
+    name_template: >-
+      {{- .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else if eq .Arch "darwin" }}MacOS
+      {{- else if eq .Arch "linux" }}Linux
+      {{- else if eq .Arch "windows" }}Windows
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end -}}
+
 checksum:
   name_template: 'checksums.txt'
 snapshot:
@@ -35,6 +41,6 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
-      -
+
 universal_binaries:
   - replace: true
