@@ -163,12 +163,16 @@ func isNumeric(s string) bool {
 	//	return false
 	//}
 
-	for _, c := range s {
+	for idx, c := range s {
 		if c == '.' {
 			continue
 		}
 		if c == '-' { // minus
-			continue
+			if idx == 0 { // at the beginning
+				continue
+			} else {
+				return false
+			}
 		}
 
 		if !unicode.IsDigit(c) {

@@ -39,6 +39,7 @@ func TestInNumeric(t *testing.T) {
 	assert.True(t, isNumeric("-0.123"))
 	assert.True(t, isNumeric("-123"))
 
+	assert.False(t, isNumeric("33-3"))
 	assert.False(t, isNumeric("abc"))
 	assert.False(t, isNumeric("Inf"))
 }
