@@ -1,6 +1,4 @@
 # Make sure to check the documentation at http://goreleaser.com
-version: 1
-
 before:
   hooks:
     # You may remove this if you don't use go modules.
@@ -42,6 +40,5 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
-
 universal_binaries:
   - replace: true
