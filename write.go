@@ -22,7 +22,10 @@ func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, 
 			// example row counting from 1
 			exampleRow, _ = sheet.Row(exampleRowNumber - 1)
 
-			sheet.RemoveRowAtIndex(exampleRowNumber - 1)
+			err = sheet.RemoveRowAtIndex(exampleRowNumber - 1)
+			if err != nil {
+				return err
+			}
 		}
 
 		err = writeSheet(dataFileName, sheet, exampleRow, delimiter)
@@ -72,7 +75,6 @@ func writeSheet(dataFileName string, sheet *xlsx.Sheet, exampleRow *xlsx.Row, de
 }
 
 func buildXls(p *params) (err error) {
-
 	var xlFile *xlsx.File
 	if p.xlsxTemplate == "" {
 		xlFile = xlsx.NewFile()
@@ -83,7 +85,10 @@ func buildXls(p *params) (err error) {
 		}
 	}
 
-	writeAllSheets(xlFile, p.input, p.sheets, p.exampleRow, p.delimiter)
+	err = writeAllSheets(xlFile, p.input, p.sheets, p.exampleRow, p.delimiter)
+	if err != nil {
+		return err
+	}
 
 	return xlFile.Save(p.output)
 }
@@ -158,11 +163,6 @@ func getSheet(xlFile *xlsx.File, sheetNames []string, i int) (sheet *xlsx.Sheet,
 }
 
 func isNumeric(s string) bool {
-
-	//if len(s)> 15{
-	//	return false
-	//}
-
 	for idx, c := range s {
 		if c == '.' {
 			continue

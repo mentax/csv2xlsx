@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/csv"
 	"errors"
+	"log"
 	"os"
 )
 
@@ -10,14 +11,16 @@ import (
 var SheetNamesTemplate = "Sheet %d"
 
 func main() {
-	initCommandLine(os.Args)
+	if err := initCommandLine(os.Args); err != nil {
+		log.Fatal(err)
+	}
 }
 
 // getCsvData read's data from CSV file.
 func getCsvData(dataFileName string) (*csv.Reader, error) {
 	dataFile, err := os.Open(dataFileName)
 	if err != nil {
-		return nil, errors.New("Problem with reading data from " + dataFileName)
+		return nil, errors.New("Can not read data from " + dataFileName)
 	}
 
 	return csv.NewReader(dataFile), nil
