@@ -1,6 +1,6 @@
 
 
-![goreleaser](https://github.com/mentax/csv2xlsx/workflows/goreleaser/badge.svg)
+[![goreleaser](https://github.com/mentax/csv2xlsx/actions/workflows/goreleaser.yml/badge.svg)](https://github.com/mentax/csv2xlsx/actions/workflows/goreleaser.yml)
 [![GoDoc](https://godoc.org/github.com/mentax/csv2xlsx?status.svg)](https://godoc.org/github.com/mentax/csv2xlsx)
 [![codebeat badge](https://codebeat.co/badges/1b57272c-e0fa-4a14-93b5-3586e192fdb3)](https://codebeat.co/projects/github-com-mentax-csv2xlsx-master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mentax/csv2xlsx)](https://goreportcard.com/report/github.com/mentax/csv2xlsx)
