@@ -40,6 +40,7 @@ csv2xlsx.exe -t example/template.xlsx -s Sheet_1 -s Sheet_2 -r 2 -o result.xlsx 
 #### GLOBAL OPTIONS:
 
 ```
+--delimiter <letter>, -d <letter> one letter delimiter used in csv file
 --sheets names, -s names          sheet names in the same order like csv files. If sheet with that name exists, data is inserted to this sheet. Usage: -s AA -s BB
 --template path, -t path          path to xlsx file with template output
 --row number, -r number           row number to use for create rows format. When '0' - not used. This row will be removed from xlsx file. (default: 0)
