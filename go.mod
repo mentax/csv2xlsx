@@ -4,9 +4,9 @@ go 1.21
 
 require (
 	github.com/stretchr/testify v1.8.4
-	github.com/tealeg/xlsx/v3 v3.3.5
+	github.com/tealeg/xlsx/v3 v3.3.6
 	github.com/urfave/cli/v2 v2.27.1
- 
+
 )
 
 require (
