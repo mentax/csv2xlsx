@@ -23,5 +23,7 @@ func getCsvData(dataFileName string) (*csv.Reader, error) {
 		return nil, errors.New("Can not read data from " + dataFileName)
 	}
 
-	return csv.NewReader(dataFile), nil
+	r := csv.NewReader(dataFile)
+	r.ReuseRecord = true
+	return r, nil
 }

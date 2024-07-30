@@ -49,7 +49,7 @@ func initCommandLine(args []string) error {
 			Name:    "template",
 			Aliases: []string{"t"},
 			Value:   "",
-			Usage:   "`path` to xlsx file with template output",
+			Usage:   "`path` to xlsx file with template file",
 		},
 		&cli.StringFlag{
 			Name:    "delimiter",
@@ -61,7 +61,7 @@ func initCommandLine(args []string) error {
 			Name:    "exampleRow",
 			Aliases: []string{"r"},
 			Value:   0,
-			Usage:   "exampleRow `number` to use for create rows format. When '0' - not used. This exampleRow will be overwrite in result xlsx file.",
+			Usage:   "exampleRow `number` to use for create rows format. When '0' - not used. This exampleRow will be overwrite in result file.",
 		},
 		&cli.StringFlag{
 			Name:    "output",
@@ -138,7 +138,7 @@ func checkAndReturnParams(c *cli.Context) (*params, error) {
 	}
 
 	if p.exampleRow != 0 && xlsxTemplate == "" {
-		return nil, cli.Exit("Defined `exampleRow in template` without xlsx template file", 7)
+		return nil, cli.Exit("Defined `exampleRow in template` without template file", 7)
 	}
 
 	return p, nil
