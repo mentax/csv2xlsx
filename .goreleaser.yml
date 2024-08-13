@@ -1,4 +1,7 @@
 # Make sure to check the documentation at http://goreleaser.com
+
+version: 2
+
 before:
   hooks:
     # You may remove this if you don't use go modules.
