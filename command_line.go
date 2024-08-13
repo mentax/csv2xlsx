@@ -39,6 +39,8 @@ func initCommandLine(args []string) error {
 	app.Version = version + " built in " + date + " from commit: [" + commit + "] by " + builtBy
 	app.ArgsUsage = "[file or file's list with csv data]"
 
+	app.DisableSliceFlagSeparator = true
+
 	app.Flags = []cli.Flag{
 		&cli.StringSliceFlag{
 			Name:    "sheets",
@@ -122,8 +124,6 @@ func checkAndReturnParams(c *cli.Context) (*params, error) {
 
 	p.exampleRow = c.Int("exampleRow")
 	p.sheets = c.StringSlice("sheets")
-
-	//
 
 	xlsxTemplate := c.String("template")
 	if xlsxTemplate != "" {
