@@ -35,8 +35,8 @@ github.com/shabbyrobe/xmlwriter v0.0.0-20230525083848-85336ec334fa h1:qSlczoKLzv
 github.com/shabbyrobe/xmlwriter v0.0.0-20230525083848-85336ec334fa/go.mod h1:tKYSeHyJGYz7eoZMlzrRDQSfdYPYt0UduMr8b97Mmaw=
 github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
-github.com/tealeg/xlsx/v3 v3.3.7 h1:clTKeQJORkctZNvQp+94juO19nj1b12snyX6PFT8iZY=
-github.com/tealeg/xlsx/v3 v3.3.7/go.mod h1:KV4FTFtvGy0TBlOivJLZu/YNZk6e0Qtk7eOSglWksuA=
+github.com/tealeg/xlsx/v3 v3.3.10 h1:hz4MO213nguwiz69QI6MkbYWcqhC3tEnXsBf2Eaqtog=
+github.com/tealeg/xlsx/v3 v3.3.10/go.mod h1:KV4FTFtvGy0TBlOivJLZu/YNZk6e0Qtk7eOSglWksuA=
 github.com/urfave/cli/v2 v2.27.4 h1:o1owoI+02Eb+K107p27wEX9Bb8eqIoZCfLXloLUSWJ8=
 github.com/urfave/cli/v2 v2.27.4/go.mod h1:m4QzxcD2qpra4z7WhzEGn74WZLViBnMpb1ToCAKdGRQ=
 github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 h1:gEOO8jv9F4OT7lGCjxCBTO/36wtF6j2nSip77qHd4x4=
