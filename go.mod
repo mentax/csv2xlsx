@@ -4,7 +4,7 @@ go 1.22
 
 require (
 	github.com/stretchr/testify v1.9.0
-	github.com/tealeg/xlsx/v3 v3.3.7
+	github.com/tealeg/xlsx/v3 v3.3.11
 	github.com/urfave/cli/v2 v2.27.5
 )
 
