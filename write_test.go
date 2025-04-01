@@ -42,4 +42,5 @@ func TestInNumeric(t *testing.T) {
 	assert.False(t, isNumeric("33-3"))
 	assert.False(t, isNumeric("abc"))
 	assert.False(t, isNumeric("Inf"))
+	assert.False(t, isNumeric("1.."))
 }

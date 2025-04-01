@@ -8,7 +8,7 @@ import (
 	"github.com/tealeg/xlsx/v3"
 )
 
-func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, exampleRowNumber int, delimiter rune) (err error) {
+func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, exampleRowNumber int, delimiter rune, startFrom int) (err error) {
 
 	for i, dataFileName := range dataFiles {
 
@@ -28,7 +28,7 @@ func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, 
 			}
 		}
 
-		err = writeSheet(dataFileName, sheet, exampleRow, delimiter)
+		err = writeSheet(dataFileName, sheet, exampleRow, delimiter, startFrom)
 
 		if err != nil {
 			return err
@@ -38,7 +38,7 @@ func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, 
 	return nil
 }
 
-func writeSheet(dataFileName string, sheet *xlsx.Sheet, exampleRow *xlsx.Row, delimiter rune) error {
+func writeSheet(dataFileName string, sheet *xlsx.Sheet, exampleRow *xlsx.Row, delimiter rune, startFrom int) error {
 
 	data, err := getCsvData(dataFileName)
 
@@ -58,6 +58,12 @@ func writeSheet(dataFileName string, sheet *xlsx.Sheet, exampleRow *xlsx.Row, de
 			return err
 		}
 
+		i++
+
+		if i <= startFrom {
+			continue
+		}
+
 		// if i > 5000 {
 		//	break
 		// }
@@ -65,8 +71,6 @@ func writeSheet(dataFileName string, sheet *xlsx.Sheet, exampleRow *xlsx.Row, de
 		// if i%500 == 0 {
 		// 	fmt.Println(i)
 		// }
-
-		i++
 
 		writeRowToXls(sheet, record, exampleRow)
 	}
@@ -85,7 +89,7 @@ func buildXls(p *params) (err error) {
 		}
 	}
 
-	err = writeAllSheets(xlFile, p.input, p.sheets, p.exampleRow, p.delimiter)
+	err = writeAllSheets(xlFile, p.input, p.sheets, p.exampleRow, p.delimiter, p.startFrom)
 	if err != nil {
 		return err
 	}
@@ -163,8 +167,13 @@ func getSheet(xlFile *xlsx.File, sheetNames []string, i int) (sheet *xlsx.Sheet,
 }
 
 func isNumeric(s string) bool {
+	var haveDot bool
 	for idx, c := range s {
 		if c == '.' {
+			if haveDot { // string with more than one dot
+				return false
+			}
+			haveDot = true
 			continue
 		}
 		if c == '-' { // minus

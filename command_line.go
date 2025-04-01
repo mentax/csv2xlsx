@@ -16,6 +16,8 @@ type params struct {
 	sheets     []string
 	exampleRow int
 
+	startFrom int
+
 	delimiter rune
 }
 
@@ -64,6 +66,12 @@ func initCommandLine(args []string) error {
 			Aliases: []string{"r"},
 			Value:   0,
 			Usage:   "exampleRow `number` to use for create rows format. When '0' - not used. This exampleRow will be overwrite in result file.",
+		},
+		&cli.IntFlag{
+			Name:    "startFrom",
+			Aliases: []string{"sf"},
+			Value:   0,
+			Usage:   "startFrom `number` decide which row is used as first row from csv file. Counting from 0.",
 		},
 		&cli.StringFlag{
 			Name:    "output",
@@ -120,7 +128,12 @@ func checkAndReturnParams(c *cli.Context) (*params, error) {
 		p.input[i] = filename
 	}
 
+	if len(p.input) < 1 {
+		return nil, cli.Exit("Missing path to input file", 5)
+	}
 	//
+
+	p.startFrom = c.Int("startFrom")
 
 	p.exampleRow = c.Int("exampleRow")
 	p.sheets = c.StringSlice("sheets")

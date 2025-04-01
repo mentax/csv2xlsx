@@ -1,0 +1,8 @@
+"field_name","value","some"
+"first row with data:",2222,
+"numeric value as string:",'03333,
+"date value:",11-2021,
+"date value as string:",'11-2021,
+"float",0.123,
+"float ",1.,
+"broken float ",1..,

@@ -40,13 +40,14 @@ csv2xlsx.exe -t example/template.xlsx -s Sheet_1 -s Sheet_2 -r 2 -o result.xlsx 
 #### GLOBAL OPTIONS:
 
 ```
---delimiter <letter>, -d <letter> one letter delimiter used in csv file
---sheets names, -s names          sheet names in the same order like csv files. If sheet with that name exists, data is inserted to this sheet. Usage: -s AA -s BB
---template path, -t path          path to xlsx file with template output
---row number, -r number           row number to use for create rows format. When '0' - not used. This row will be removed from xlsx file. (default: 0)
---output xlsx file, -o xlsx file  path to result xlsx file (default: "./output.xlsx")
---help, -h                        show help
---version, -v                     print the version
+ --sheets names, -s names [ --sheets names, -s names ]  sheet names in the same order like csv files. If sheet with that name exists, data is inserted to this sheet. Usage: -s AA -s BB
+ --template path, -t path                               path to xlsx file with template file
+ --delimiter letter, -d letter                          one letter delimiter used in csv file (default: ",")
+ --exampleRow number, -r number                         exampleRow number to use for create rows format. When '0' - not used. This exampleRow will be overwrite in result file. (default: 0)
+ --startFrom number, --sf number                        startFrom number decide which row is used as first row from csv file. Counting from 0. (default: 0)
+ --output xlsx file, -o xlsx file                       path to result xlsx file (default: "./output.xlsx")
+ --help, -h                                             show help
+ --version, -v                                          print the version
 ```   
 
 
