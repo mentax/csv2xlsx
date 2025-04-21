@@ -6,7 +6,7 @@ toolchain go1.24.1
 
 require (
 	github.com/stretchr/testify v1.10.0
-	github.com/tealeg/xlsx/v3 v3.3.12
+	github.com/tealeg/xlsx/v3 v3.3.13
 	github.com/urfave/cli/v2 v2.27.6
 )
 
