@@ -5,7 +5,7 @@ import (
 	"io"
 	"unicode"
 
-	"github.com/tealeg/xlsx/v3"
+	"codeberg.org/tealeg/xlsx/v4"
 )
 
 func writeAllSheets(xlFile *xlsx.File, dataFiles []string, sheetNames []string, exampleRowNumber int, delimiter rune, startFrom int) (err error) {

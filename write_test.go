@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/tealeg/xlsx/v3"
 	"testing"
+
+	"codeberg.org/tealeg/xlsx/v4"
 
 	"github.com/stretchr/testify/assert"
 )

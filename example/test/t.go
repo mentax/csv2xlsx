@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/tealeg/xlsx/v3"
+	"codeberg.org/tealeg/xlsx/v4"
 )
 
 func main() {
