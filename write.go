@@ -82,7 +82,7 @@ func buildXls(p *params) (err error) {
 	var xlFile *xlsx.File
 	var options []xlsx.FileOption
 
-	if p.maxMemory {
+	if p.useCache {
 		options = append(options, xlsx.UseDiskVCellStore)
 	}
 

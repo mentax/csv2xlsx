@@ -20,7 +20,7 @@ type params struct {
 
 	delimiter rune
 
-	maxMemory bool
+	useCache bool
 }
 
 var (
@@ -82,7 +82,7 @@ func initCommandLine(args []string) error {
 			Usage:   "path to result `xlsx file`",
 		},
 		&cli.BoolFlag{
-			Name:  "max-memory",
+			Name:  "use-cache",
 			Usage: "enable disk-based storage for large files to limit memory usage",
 		},
 	}
@@ -160,7 +160,7 @@ func checkAndReturnParams(c *cli.Context) (*params, error) {
 		return nil, cli.Exit("Defined `exampleRow in template` without template file", 7)
 	}
 
-	p.maxMemory = c.Bool("max-memory")
+	p.useCache = c.Bool("use-cache")
 
 	return p, nil
 }
