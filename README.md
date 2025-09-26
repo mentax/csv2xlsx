@@ -26,6 +26,12 @@
 
    (On MacBook Pro 2016)
 
+### Benchmark:
+
+To compare speed between builds you can use:
+
+`go test -bench=. -tags=benchmark`
+
 ### Example:
 
 ```bash
