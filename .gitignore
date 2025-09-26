@@ -11,4 +11,5 @@ csv2xlsx
 *.out
 
 /.idea
-/dist
+/distdummy_large.csv
+test_large_output.xlsx

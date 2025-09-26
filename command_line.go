@@ -19,6 +19,8 @@ type params struct {
 	startFrom int
 
 	delimiter rune
+
+	useCache bool
 }
 
 var (
@@ -78,6 +80,10 @@ func initCommandLine(args []string) error {
 			Aliases: []string{"o"},
 			Value:   "./output.xlsx",
 			Usage:   "path to result `xlsx file`",
+		},
+		&cli.BoolFlag{
+			Name:  "use-cache",
+			Usage: "enable disk-based storage for large files to limit memory usage",
 		},
 	}
 
@@ -153,6 +159,8 @@ func checkAndReturnParams(c *cli.Context) (*params, error) {
 	if p.exampleRow != 0 && xlsxTemplate == "" {
 		return nil, cli.Exit("Defined `exampleRow in template` without template file", 7)
 	}
+
+	p.useCache = c.Bool("use-cache")
 
 	return p, nil
 }

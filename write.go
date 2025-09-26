@@ -80,10 +80,16 @@ func writeSheet(dataFileName string, sheet *xlsx.Sheet, exampleRow *xlsx.Row, de
 
 func buildXls(p *params) (err error) {
 	var xlFile *xlsx.File
+	var options []xlsx.FileOption
+
+	if p.useCache {
+		options = append(options, xlsx.UseDiskVCellStore)
+	}
+
 	if p.xlsxTemplate == "" {
-		xlFile = xlsx.NewFile()
+		xlFile = xlsx.NewFile(options...)
 	} else {
-		xlFile, err = xlsx.OpenFile(p.xlsxTemplate)
+		xlFile, err = xlsx.OpenFile(p.xlsxTemplate, options...)
 		if err != nil {
 			return err
 		}
