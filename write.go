@@ -167,26 +167,28 @@ func getSheet(xlFile *xlsx.File, sheetNames []string, i int) (sheet *xlsx.Sheet,
 }
 
 func isNumeric(s string) bool {
-	var haveDot bool
-	for idx, c := range s {
-		if c == '.' {
-			if haveDot { // string with more than one dot
+	if s == "" {
+		return false
+	}
+
+	var haveDot, haveDigit bool
+	for i, c := range s {
+		switch {
+		case c == '.':
+			if haveDot {
 				return false
 			}
 			haveDot = true
-			continue
-		}
-		if c == '-' { // minus
-			if idx == 0 { // at the beginning
-				continue
-			} else {
+		case c == '-':
+			if i > 0 {
 				return false
 			}
-		}
-
-		if !unicode.IsDigit(c) {
+		case unicode.IsDigit(c):
+			haveDigit = true
+		default:
 			return false
 		}
 	}
-	return true
+
+	return haveDigit
 }
