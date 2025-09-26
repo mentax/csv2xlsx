@@ -52,6 +52,7 @@ csv2xlsx.exe -t example/template.xlsx -s Sheet_1 -s Sheet_2 -r 2 -o result.xlsx 
  --exampleRow number, -r number                         exampleRow number to use for create rows format. When '0' - not used. This exampleRow will be overwrite in result file. (default: 0)
  --startFrom number, --sf number                        startFrom number decide which row is used as first row from csv file. Counting from 0. (default: 0)
  --output xlsx file, -o xlsx file                       path to result xlsx file (default: "./output.xlsx")
+ --max-memory                                           enable disk-based storage for large files to limit memory usage
  --help, -h                                             show help
  --version, -v                                          print the version
 ```   
