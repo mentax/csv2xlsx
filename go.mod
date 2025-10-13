@@ -5,7 +5,7 @@ go 1.24
 toolchain go1.24.1
 
 require (
-	codeberg.org/tealeg/xlsx/v4 v4.0.0
+	codeberg.org/tealeg/xlsx/v4 v4.0.1
 	github.com/stretchr/testify v1.11.1
 	github.com/urfave/cli/v2 v2.27.7
 )
