@@ -52,7 +52,7 @@ func writeSheet(dataFileName string, sheet *xlsx.Sheet, exampleRow *xlsx.Row, de
 	for {
 		record, err := data.Read()
 
-		if err == io.EOF || record == nil {
+		if err == io.EOF {
 			break
 		} else if err != nil {
 			return err

@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,6 +14,55 @@ var p = &params{
 	input:        []string{"./example/data.csv"},
 	xlsxTemplate: "./example/template.xlsx",
 	output:       fileName,
+	delimiter:    ',',
+}
+
+func TestBuildXlsCSVErrors(t *testing.T) {
+	for _, useCache := range []bool{false, true} {
+		for _, existingOutput := range []bool{false, true} {
+			for _, delimiter := range []rune{',', 0} {
+				name := "memory"
+				if useCache {
+					name = "disk"
+				}
+				if existingOutput {
+					name += "/existing"
+				} else {
+					name += "/new"
+				}
+				if delimiter == 0 {
+					name += "/invalid delimiter"
+				} else {
+					name += "/missing quote"
+				}
+				t.Run(name, func(t *testing.T) {
+					dir := t.TempDir()
+					input := filepath.Join(dir, "input.csv")
+					output := filepath.Join(dir, "output.xlsx")
+					if err := os.WriteFile(input, []byte("\"unterminated\n"), 0600); err != nil {
+						t.Fatal(err)
+					}
+					if existingOutput {
+						if err := os.WriteFile(output, []byte("previous output"), 0600); err != nil {
+							t.Fatal(err)
+						}
+					}
+					err := buildXls(&params{
+						input: []string{input}, output: output, delimiter: delimiter, useCache: useCache,
+					})
+					assert.Error(t, err)
+					if existingOutput {
+						data, err := os.ReadFile(output)
+						assert.NoError(t, err)
+						assert.True(t, string(data) == "previous output", "existing output was overwritten")
+					} else {
+						_, err := os.Stat(output)
+						assert.True(t, os.IsNotExist(err))
+					}
+				})
+			}
+		}
+	}
 }
 
 func TestBuildXls(t *testing.T) {

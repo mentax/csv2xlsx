@@ -33,8 +33,9 @@ func BenchmarkBuildXlsWithBigFile(b *testing.B) {
 	defer removeBenchmarkFile()
 
 	p := &params{
-		input:  []string{BENCHMARK_FILE_NAME},
-		output: "./testFile.xlsx",
+		input:     []string{BENCHMARK_FILE_NAME},
+		output:    "./testFile.xlsx",
+		delimiter: ',',
 	}
 
 	for n := 0; n < b.N; n++ {
